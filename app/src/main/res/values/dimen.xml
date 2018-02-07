@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dot_width">50px</dimen>
+    <dimen name="dot_height">50px</dimen>
+    <dimen name="textsizecontent">22dp</dimen>
+    <dimen name="textSizeTitle">20dp</dimen>
+</resources>
