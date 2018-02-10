@@ -1,11 +1,18 @@
 package com.example.newbanner.fragment;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,37 +20,55 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.newbanner.MainActivity;
 import com.example.newbanner.R;
 import com.example.newbanner.adapter.ImageAdapter;
+import com.example.newbanner.bean.AdviceMessage;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by asus1 on 2018/2/8.
  */
 
-public class Menu_main_fragment extends Fragment implements View.OnTouchListener {
+public class Menu_main_fragment extends Fragment implements View.OnTouchListener, View.OnClickListener {
+    //权限
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private Menu_main_fragment.ImageHandler mHandler = new Menu_main_fragment.ImageHandler(new WeakReference<Menu_main_fragment>(this));
     private ViewPager mViewPager;
-    private TextView text_1,text_2,text_3;
+    private TextView text_1, text_2, text_3;
+    private LinearLayout home_today, home_toady_first, home_toady_second, home_toady_third, home_help_ask, home_help_send;
     private LinearLayout menu_main_shouye;
 
     private String textContent[];
-    List<String> list=new ArrayList<>();
+    List<String> list = new ArrayList<>();
     // 自定义轮播图的资源
-    private int[] mImageResIds = {R.drawable.back_bg,R.drawable.edit_bg,R.drawable.help};
+    private int[] mImageResIds = {R.drawable.back_bg, R.drawable.edit_bg, R.drawable.help};
     // 放轮播图片的ImageView 的list
     private List<ImageView> mImageList = new ArrayList<ImageView>();
     // 放圆点的View的list
     private List<View> mDotList = new ArrayList<View>();
+    static String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.menu_main_fragment,container,false);
+        return inflater.inflate(R.layout.menu_main_fragment, container, false);
     }
 
     @Override
@@ -53,15 +78,109 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
         list.add("456789");
         list.add("78915551");
         initViews();
+        setListeners();
         changeTextContent();
 
+        setImages();
+        //bmob中修改校园通知
+//        final AdviceMessage adviceMessage=new AdviceMessage();
+//        adviceMessage.setObjectId("0101");
+//        adviceMessage.setAdviceName("校园通知");
+//        adviceMessage.setAdviceContext("bmob第一条通知");
+//        adviceMessage.save(new SaveListener<String>() {
+//            @Override
+//            public void done(String s, BmobException e) {
+//
+//                if (e==null){
+//                    Log.d("添加数据成功，objectId为",adviceMessage.getObjectId());
+//                }
+//                else {
+//                    Log.d("添加数据失败",e.getMessage());
+//                }
+//            }
+//        });
+//        adviceMessage.setAdviceContext("修改后的Context");
+//        adviceMessage.update("0d2ef4aa5d", new UpdateListener() {
+//            @Override
+//            public void done(BmobException e) {
+//                if (e==null){
+//                    Log.d("修改后的通知内容是：",adviceMessage.getAdviceContext());
+//                }else {
+//                    Log.d("修改失败",e.getMessage());
+//                }
+//            }
+//        });
     }
+
+    /**
+     * Android6.0 除在Manifest中添加权限外，还需在需要权限的代码之前添加权限
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+    }
+
+    /**
+     * 上传首页排行榜图片
+     */
+    private void setImages() {
+        verifyStoragePermissions(getActivity());
+        String picPath = path + "/ajinkai/jinkai.png";
+        Log.d("path=", path);
+//        String picPath = "E:\\金锴\\图片素材\\拿了么\\edit_bg.png";
+        final BmobFile bmobFile = new BmobFile(new File(picPath));
+        bmobFile.uploadblock(new UploadFileListener() {
+
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    //bmobFile.getFileUrl()--返回的上传文件的完整地址
+                    Log.d("上传文件成功:", bmobFile.getFileUrl());
+//                    toast("上传文件成功:" + bmobFile.getFileUrl());
+                } else {
+                    Log.d("上传文件失败：", e.getMessage());
+//                    toast("上传文件失败：" + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onProgress(Integer value) {
+                // 返回的上传进度（百分比）
+                Log.d("返回的上传进度", value + "");
+            }
+        });
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_PICK);
+//        intent.setType("image/*");
+//        startActivityForResult(intent, RESULT_LOAD_IMAGE);
+//
+    }
+
+    private void setListeners() {
+        home_today.setOnClickListener(this);
+        home_toady_first.setOnClickListener(this);
+        home_toady_second.setOnClickListener(this);
+        home_toady_third.setOnClickListener(this);
+        home_help_send.setOnClickListener(this);
+        home_help_ask.setOnClickListener(this);
+    }
+
+
     private void changeTextContent() {
-        text_1=(TextView)getView().findViewById(R.id.tv_text1);
-        text_2=(TextView)getView().findViewById(R.id.tv_text2);
-        text_3=(TextView)getView().findViewById(R.id.tv_text3);
-        for (int i=0;i<list.size();i++){
-            switch (i){
+        text_1 = (TextView) getView().findViewById(R.id.tv_text1);
+        text_2 = (TextView) getView().findViewById(R.id.tv_text2);
+        text_3 = (TextView) getView().findViewById(R.id.tv_text3);
+
+        for (int i = 0; i < list.size(); i++) {
+            switch (i) {
                 case 0:
                     text_1.setText(String.valueOf(list.get(i)));
                     break;
@@ -76,8 +195,14 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
     }
 
     private void initViews() {
-        // 初始化iewPager的内容
-        mViewPager = (ViewPager)getView().findViewById(R.id.view_pager);
+        home_today = (LinearLayout) getView().findViewById(R.id.home_today); //绑定今日排行视图
+        home_toady_first = (LinearLayout) getView().findViewById(R.id.home_today_firstL);//今日排行图片一
+        home_toady_second = (LinearLayout) getView().findViewById(R.id.home_today_secondL);//今日排行图片二
+        home_toady_third = (LinearLayout) getView().findViewById(R.id.home_today_thirdL);//今日排行图片三
+        home_help_ask = (LinearLayout) getView().findViewById(R.id.home__help_askL);
+        home_help_send = (LinearLayout) getView().findViewById(R.id.home_help_sendL);
+        // 初始化viewPager的内容
+        mViewPager = (ViewPager) getView().findViewById(R.id.view_pager);
         LinearLayout dotLayout = (LinearLayout) getView().findViewById(R.id.dotLayout);
         dotLayout.removeAllViews();
         for (int i = 0; i < mImageResIds.length; i++) {
@@ -88,7 +213,7 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
             mImageList.add(imageView);
 
             View dotView = new View(getContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( 50,50);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, 50);
 //            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.dot_width),
 //                    getResources().getDimensionPixelSize(R.dimen.dot_width));
             params.setMargins(4, 0, 4, 0);
@@ -118,6 +243,30 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.home_today:
+                Toast.makeText(getContext(), "You Clicked The 今日排行！", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.home_today_firstL:
+                Toast.makeText(getContext(), "You Clicked The FirstImage！", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.home_today_secondL:
+                Toast.makeText(getContext(), "You Clicked The SecondImage！", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.home_today_thirdL:
+                Toast.makeText(getContext(), "You Clicked The ThirdImage！", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.home__help_askL:
+                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.home_help_sendL:
+                Toast.makeText(getContext(), "You Clicked The 我要代拿", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
 

@@ -27,12 +27,15 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Fragment mainHome;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bmob.initialize(this,"30cf7a949fe1da01b0c798b314a41dad");
         setContentView(R.layout.activity_main);
         initViews();
         getSupportFragmentManager()
