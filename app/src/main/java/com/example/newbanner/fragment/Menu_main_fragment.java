@@ -23,7 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newbanner.MainActivity;
+import com.example.newbanner.Paihangbang;
 import com.example.newbanner.R;
+import com.example.newbanner.TakeActivity;
 import com.example.newbanner.adapter.ImageAdapter;
 import com.example.newbanner.bean.AdviceMessage;
 
@@ -81,7 +83,7 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
         setListeners();
         changeTextContent();
 
-        setImages();
+//        setImages();
         //bmob中修改校园通知
 //        final AdviceMessage adviceMessage=new AdviceMessage();
 //        adviceMessage.setObjectId("0101");
@@ -134,7 +136,6 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
         verifyStoragePermissions(getActivity());
         String picPath = path + "/ajinkai/jinkai.png";
         Log.d("path=", path);
-//        String picPath = "E:\\金锴\\图片素材\\拿了么\\edit_bg.png";
         final BmobFile bmobFile = new BmobFile(new File(picPath));
         bmobFile.uploadblock(new UploadFileListener() {
 
@@ -249,7 +250,8 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_today:
-                Toast.makeText(getContext(), "You Clicked The 今日排行！", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(v.getContext(),Paihangbang.class);
+                startActivity(intent);
                 break;
             case R.id.home_today_firstL:
                 Toast.makeText(getContext(), "You Clicked The FirstImage！", Toast.LENGTH_SHORT).show();
@@ -261,7 +263,9 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
                 Toast.makeText(getContext(), "You Clicked The ThirdImage！", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home__help_askL:
-                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
+                Intent intent1=new Intent(v.getContext(), TakeActivity.class);
+                startActivity(intent1);
+//                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home_help_sendL:
                 Toast.makeText(getContext(), "You Clicked The 我要代拿", Toast.LENGTH_SHORT).show();
