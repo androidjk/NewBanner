@@ -14,11 +14,19 @@
 
         <ImageView
             android:layout_width="30dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:background="@drawable/backw"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我要代拿"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="20dp"
+            android:textColor="#fcf8f8"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -61,7 +69,7 @@
                 android:id="@+id/take_textview_second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="区域：" />
+                android:text="快递品牌：" />
 
             <TextView
                 android:id="@+id/take_spinner_text2"
@@ -87,7 +95,7 @@
                 android:id="@+id/take_textview_third"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="区域："/>
+                android:text="重量："/>
             <TextView
                 android:id="@+id/take_spinner_text3"
                 android:layout_width="match_parent"
@@ -103,4 +111,10 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/take_recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>
