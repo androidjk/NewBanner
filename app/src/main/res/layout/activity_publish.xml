@@ -273,13 +273,11 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/tv_address_dormitory"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:entries="@array/dormitory"
+                android:id="@+id/sp_address_dormitory"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:hint="点击选择宿舍"
                 android:maxLines="1"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -297,14 +295,13 @@
                 android:text="重量："
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/tv_address_weight"
+            <Spinner
+                android:id="@+id/sp_address_weight"
                 android:maxLines="1"
                 android:gravity="center_vertical"
                 android:textSize="13sp"
-                android:hint="点击选择重量"
-                android:background="@color/white"
-                android:layout_width="wrap_content"
+                android:entries="@array/express_weight"
+                android:layout_width="150dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
         <LinearLayout
@@ -321,14 +318,13 @@
                 android:text="快递点："
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/tv_address_point"
+            <Spinner
+                android:id="@+id/sp_address_point"
                 android:maxLines="1"
                 android:gravity="center_vertical"
                 android:textSize="13sp"
-                android:hint="点击选择快递点"
-                android:background="@color/white"
-                android:layout_width="wrap_content"
+                android:entries="@array/express_point"
+                android:layout_width="150dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
 

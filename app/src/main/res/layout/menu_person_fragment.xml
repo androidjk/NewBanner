@@ -96,9 +96,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
                 <LinearLayout
+                    android:id="@+id/ll_person_address"
                     android:background="@drawable/layout_click"
                     android:clickable="true"
-
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:orientation="horizontal">

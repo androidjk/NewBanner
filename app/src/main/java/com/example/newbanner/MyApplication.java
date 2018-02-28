@@ -9,6 +9,8 @@ import com.imnjh.imagepicker.PickerConfig;
 import com.imnjh.imagepicker.SImagePicker;
 import com.zxy.tiny.Tiny;
 
+import org.litepal.LitePalApplication;
+
 import cn.bmob.v3.Bmob;
 
 
@@ -16,7 +18,7 @@ import cn.bmob.v3.Bmob;
  * Created by Administrator on 2017/12/3.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends LitePalApplication {
     private static Context mContext;
 
     public static Context getContext() {
