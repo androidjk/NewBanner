@@ -19,16 +19,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD:app/src/main/java/com/example/newbanner/TakeActivity.java
 import com.example.newbanner.Bmobentity.TakeMenu;
 import com.example.newbanner.adapter.RecycleviewAdapter;
 import com.example.newbanner.entity.TakeMenuList;
 
 import java.io.File;
-=======
 import com.example.newbanner.R;
 
->>>>>>> 1.0:app/src/main/java/com/example/newbanner/activity/TakeActivity.java
 import java.util.ArrayList;
 import java.util.List;
 

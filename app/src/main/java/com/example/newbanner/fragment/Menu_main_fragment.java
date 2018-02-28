@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.newbanner.Paihangbang;
 import com.example.newbanner.R;
+import com.example.newbanner.activity.PublishActivity;
 import com.example.newbanner.activity.TakeActivity;
 import com.example.newbanner.adapter.ImageAdapter;
 
@@ -258,7 +259,7 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
                 Toast.makeText(getContext(), "You Clicked The ThirdImage！", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home__help_askL:
-                Intent intent1=new Intent(v.getContext(), TakeActivity.class);
+                Intent intent1=new Intent(v.getContext(), PublishActivity.class);
                 startActivity(intent1);
 //                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
                 break;

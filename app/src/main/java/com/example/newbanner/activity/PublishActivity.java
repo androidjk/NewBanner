@@ -4,19 +4,19 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.newbanner.R;
+import com.example.newbanner.bean.Address;
 import com.example.newbanner.bean.ExpressHelp;
 import com.example.newbanner.bean.Student;
-import com.example.newbanner.other.DataPickerDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.litepal.crud.DataSupport;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,23 +43,25 @@ public class PublishActivity extends BaseActivity {
     EditText etRemarks;
     @Bind(R.id.et_express_sms)
     EditText etExpressSms;
-    @Bind(R.id.ll_address_dormitory)
-    LinearLayout llAddressDormitory;
-    @Bind(R.id.ll_address_weight)
-    LinearLayout llAddressWeight;
-    @Bind(R.id.ll_address_point)
-    LinearLayout llAddressPoint;
     @Bind(R.id.btn_publish)
     Button btnPublish;
-    @Bind(R.id.tv_address_dormitory)
-    TextView tvAddressDormitory;
-    @Bind(R.id.tv_address_weight)
-    TextView tvAddressWeight;
-    @Bind(R.id.tv_address_point)
-    TextView tvAddressPoint;
+    @Bind(R.id.sp_address_dormitory)
+    Spinner spAddressDormitory;
+    @Bind(R.id.ll_address_dormitory)
+    LinearLayout llAddressDormitory;
+    @Bind(R.id.sp_address_weight)
+    Spinner spAddressWeight;
+    @Bind(R.id.ll_address_weight)
+    LinearLayout llAddressWeight;
+    @Bind(R.id.sp_address_point)
+    Spinner spAddressPoint;
+    @Bind(R.id.ll_address_point)
+    LinearLayout llAddressPoint;
+
 
     private ExpressHelp expressHelp = new ExpressHelp();
     Student user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,107 +70,76 @@ public class PublishActivity extends BaseActivity {
         setToolBar(R.id.tb_publish);
         initHome();
 
-//        try {
-//            for (Address address : DataSupport.findAll(Address.class)) {
-//                if (address.isDefault()){
-//                    etAddressTelephone.setText(address.getPhoneNumber());
-//                    etAddressAccuracy.setText(address.getAddress());
-//                    etAddressName.setText(address.getReceiver());
-//                    break;
-//                }
-//            }
-//        } finally {
-//
-//        }
+        try {
+            for (Address address : DataSupport.findAll(Address.class)) {
+                if (address.isDefault()){
+                    etAddressTelephone.setText(address.getPhoneNumber());
+                    etAddressAccuracy.setText(address.getAddress());
+                    etAddressName.setText(address.getReceiver());
+                    break;
+                }
+            }
+        } finally {
+
+        }
     }
 
+    public void getSpinnerData() {
+        spAddressDormitory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                expressHelp.setDormitory(spAddressDormitory.getSelectedItem().toString());
+            }
+        });
+        spAddressPoint.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                expressHelp.setExpressPoint(spAddressPoint.getSelectedItem().toString());
+            }
+        });
+        spAddressWeight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                expressHelp.setWeight(spAddressWeight.getSelectedItem().toString());
+            }
+        });
+    }
 
     @OnClick({R.id.ll_address_dormitory, R.id.ll_address_weight, R.id.ll_address_point, R.id.btn_publish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_address_dormitory:
-                DataPickerDialog.Builder builder1 = new DataPickerDialog.Builder(this);
-                List<String> data1 = new ArrayList<>();
-                String[] dormitory = getResources().getStringArray(R.array.dormitory);
-                for (int i = 1; i < dormitory.length; i++) {
-                    data1.add(dormitory[i]);
-                }
 
-                DataPickerDialog dialog1 = builder1.setUnit("").setData(data1).setSelection(1).setTitle("宿舍")
-                        .setOnDataSelectedListener(new DataPickerDialog.OnDataSelectedListener() {
-                            @Override
-                            public void onDataSelected(String itemValue) {
-                                expressHelp.setDormitory(itemValue);
-                                tvAddressDormitory.setText(itemValue);
-
-                            }
-                        }).create();
-
-                dialog1.show();
                 break;
             case R.id.ll_address_weight:
-                DataPickerDialog.Builder builder2 = new DataPickerDialog.Builder(this);
-                List<String> data2 = new ArrayList<>();
-                String[] weight = getResources().getStringArray(R.array.express_weight);
-                for (int i = 1; i < weight.length; i++) {
-                    data2.add(weight[i]);
-                }
 
-                DataPickerDialog dialog2 = builder2.setUnit("").setData(data2).setSelection(1).setTitle("重量")
-                        .setOnDataSelectedListener(new DataPickerDialog.OnDataSelectedListener() {
-                            @Override
-                            public void onDataSelected(String itemValue) {
-                                expressHelp.setWeight(itemValue);
-                                tvAddressWeight.setText(itemValue);
-
-                            }
-                        }).create();
-
-                dialog2.show();
                 break;
             case R.id.ll_address_point:
-                DataPickerDialog.Builder builder3 = new DataPickerDialog.Builder(this);
-                List<String> data3 = new ArrayList<>();
-                String[] point = getResources().getStringArray(R.array.express_point);
-                for (int i = 1; i < point.length; i++) {
-                    data3.add(point[i]);
-                }
 
-                DataPickerDialog dialog3 = builder3.setUnit("").setData(data3).setSelection(1).setTitle("重量")
-                        .setOnDataSelectedListener(new DataPickerDialog.OnDataSelectedListener() {
-                            @Override
-                            public void onDataSelected(String itemValue) {
-                                expressHelp.setExpressPoint(itemValue);
-                                tvAddressPoint.setText(itemValue);
-
-                            }
-                        }).create();
-
-                dialog3.show();
                 break;
             case R.id.btn_publish:
-                if (TextUtils.isEmpty(etPickupCode.getText().toString())){
+                getSpinnerData();
+                if (TextUtils.isEmpty(etPickupCode.getText().toString())) {
                     Toast.makeText(mActivity, "取货码不能为空", Toast.LENGTH_SHORT).show();
-                }else if (TextUtils.isEmpty(etPointName.getText().toString())){
+                } else if (TextUtils.isEmpty(etPointName.getText().toString())) {
                     Toast.makeText(mActivity, "快递点名称不能为空", Toast.LENGTH_SHORT).show();
-                }else if (TextUtils.isEmpty(etAddressAccuracy.getText().toString())){
+                } else if (TextUtils.isEmpty(etAddressAccuracy.getText().toString())) {
                     Toast.makeText(mActivity, "收货地址不能为空", Toast.LENGTH_SHORT).show();
-                }else if (TextUtils.isEmpty(etAddressName.getText().toString())){
+                } else if (TextUtils.isEmpty(etAddressName.getText().toString())) {
                     Toast.makeText(mActivity, "收件人不能为空", Toast.LENGTH_SHORT).show();
-                }else if (TextUtils.isEmpty(etAddressTelephone.getText().toString())){
+                } else if (TextUtils.isEmpty(etAddressTelephone.getText().toString())) {
                     Toast.makeText(mActivity, "电话号码不能为空", Toast.LENGTH_SHORT).show();
 
-                }else if (TextUtils.isEmpty(tvAddressDormitory.getText().toString())){
-                    Toast.makeText(mActivity, "宿舍不能为空", Toast.LENGTH_SHORT).show();
+                } else if (expressHelp.getDormitory().equals("宿舍")) {
+                    Toast.makeText(mActivity, "请选择宿舍", Toast.LENGTH_SHORT).show();
 
-                }else if (TextUtils.isEmpty(tvAddressWeight.getText().toString())){
-                    Toast.makeText(mActivity, "重量不能为空", Toast.LENGTH_SHORT).show();
+                } else if (expressHelp.getWeight().equals("重量")) {
+                    Toast.makeText(mActivity, "请选择重量", Toast.LENGTH_SHORT).show();
 
-                }else if (TextUtils.isEmpty(tvAddressPoint.getText().toString())){
-                    Toast.makeText(mActivity, "快递点不能为空", Toast.LENGTH_SHORT).show();
+                } else if (expressHelp.getExpressPoint().equals("快递点")) {
+                    Toast.makeText(mActivity, "请选择快递点", Toast.LENGTH_SHORT).show();
 
-                }
-                else{
+                } else {
                     expressHelp.setState(false);
                     expressHelp.setUser(BmobUser.getCurrentUser(Student.class));
                     expressHelp.setAddressAccuracy(etAddressAccuracy.getText().toString());
@@ -181,37 +152,38 @@ public class PublishActivity extends BaseActivity {
                     expressHelp.setHelpUser(null);
                     expressHelp.setPublishTime(System.currentTimeMillis());
                     user = BmobUser.getCurrentUser(Student.class);
-                    if (user.getHelpSum()>0){
+                    if (user.getHelpSum() > 0) {
 //                        showProgressDialog();
                         expressHelp.save(new SaveListener<String>() {
                             @Override
                             public void done(String s, BmobException e) {
-                                if (e == null){
-                                    Student newUser = new Student(user.getSum(),user.getHelpSum()-1);
+                                if (e == null) {
+                                    Student newUser = new Student(user.getSum(), user.getHelpSum() - 1);
                                     newUser.update(user.getObjectId(), new UpdateListener() {
                                         @Override
                                         public void done(BmobException e) {
                                             dissmiss();
-                                            if(e==null){
+                                            if (e == null) {
                                                 Toast.makeText(mActivity, "发布成功", Toast.LENGTH_SHORT).show();
-                                            }else{
+                                            } else {
                                                 Toast.makeText(PublishActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                                     finish();
-                                }else {
+                                } else {
                                     dissmiss();
-                                    Toast.makeText(mActivity, e.getErrorCode()+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mActivity, e.getErrorCode() + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                    }else{
+                    } else {
                         Toast.makeText(mActivity, "你的可请求帮助次数不够", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     break;
-                }   }
+                }
+        }
     }
 }

@@ -31,7 +31,8 @@
         <activity android:name=".Paihangbang" />
         <activity android:name=".activity.TakeActivity" />
         <activity android:name=".activity.PublishActivity" />
-        <activity android:name=".activity.AddressActivity"></activity>
+        <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.AddAddressActivity"></activity>
     </application>
 
 </manifest>
