@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#8BC34A</color>
     <color name="colorPrimaryDark">#8BC34A</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#8BC34A</color>
+    <color name="colorHint">#6b6e6b</color>
+    <color name="linear">#bababa</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFF</color>
+    <color name="share_text">#ff000000</color>
+    <color name="going_unfinsh_color">#edebeb</color>
+    <color name="part_linear_color">#bababa</color>
+    <color name="dsa">#f8a370</color>
+    <color name="blue_balloon">#7bc9fc</color>
+    <color name="exit_login_text">#e51e1e</color>
+    <color name="base_color_text_black">#3e3e39</color>
+    <color name="base_color_text_white">#ffffff</color>
+    <color name="color_line">#dadada</color>
 </resources>

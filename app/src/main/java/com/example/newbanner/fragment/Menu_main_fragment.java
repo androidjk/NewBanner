@@ -22,23 +22,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.newbanner.MainActivity;
 import com.example.newbanner.Paihangbang;
 import com.example.newbanner.R;
-import com.example.newbanner.TakeActivity;
+import com.example.newbanner.activity.TakeActivity;
 import com.example.newbanner.adapter.ImageAdapter;
-import com.example.newbanner.bean.AdviceMessage;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 /**

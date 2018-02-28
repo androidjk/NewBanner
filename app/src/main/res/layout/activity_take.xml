@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.newbanner.TakeActivity">
+    tools:context="com.example.newbanner.activity.TakeActivity">
     <RelativeLayout
         android:id="@+id/take_head"
         android:layout_width="match_parent"
