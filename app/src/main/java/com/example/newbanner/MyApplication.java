@@ -26,7 +26,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Bmob.initialize(this,"567a56deb6f8f8e1c55f71f4dc84158f");
+        Bmob.initialize(this,"30cf7a949fe1da01b0c798b314a41dad");
         mContext=getApplicationContext();
         Tiny.getInstance().init(this);
         SImagePicker.init(new PickerConfig.Builder().setAppContext(this)

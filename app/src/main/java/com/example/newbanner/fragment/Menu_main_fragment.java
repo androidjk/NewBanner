@@ -257,13 +257,13 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
             case R.id.home_today_thirdL:
                 Toast.makeText(getContext(), "You Clicked The ThirdImage！", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.home__help_askL:
+            case R.id.home_help_sendL:
                 Intent intent1=new Intent(v.getContext(), TakeActivity.class);
                 startActivity(intent1);
 //                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.home_help_sendL:
-                Toast.makeText(getContext(), "You Clicked The 我要代拿", Toast.LENGTH_SHORT).show();
+            case R.id.home__help_askL:
+                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

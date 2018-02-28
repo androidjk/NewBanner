@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.newbanner.R;
-import com.example.newbanner.TakeActivity;
 import com.example.newbanner.entity.TakeMenuList;
 
 import java.util.List;
@@ -40,7 +40,9 @@ public class RecycleviewAdapter extends RecyclerView.Adapter<RecycleviewAdapter.
 
         TakeMenuList takeMenuList=lists.get(position);
 
-        holder.circleImageView.setImageResource(takeMenuList.getCircleImageViewId());
+        Glide.with(context)
+                .load(takeMenuList.getNickUrl())
+                .into(holder.circleImageView);
         holder.begin.setText(takeMenuList.getBeginTextView());
         holder.end.setText(takeMenuList.getEndTextView());
         holder.goal.setText(takeMenuList.getGoal());

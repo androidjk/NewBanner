@@ -1,16 +1,4 @@
 <resources>
-    <string name="app_name">NewBanner</string>
-    <string-array name="area">
-        <item>jinkai</item>
-        <item>...</item>
-        <item>那么麻烦？</item>
-    </string-array>
-    <string name="timepicker_year">年</string>
-    <string name="timepicker_month">月</string>
-    <string name="timepicker_day">日</string>
-    <string name="timepicker_hour">时</string>
-    <string name="timepicker_min">分</string>
-    <string name="timepicker_title">选择起止时间</string>
-    <string name="timepicker_finish">完成</string>
-    <string name="timepicker_title_default">设置</string>
+    <!--<string name="app_name">NewBanner</string>-->
+   <!---->
 </resources>

@@ -14,21 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD:app/src/main/java/com/example/newbanner/TakeActivity.java
 import com.example.newbanner.Bmobentity.TakeMenu;
 import com.example.newbanner.adapter.RecycleviewAdapter;
 import com.example.newbanner.entity.TakeMenuList;
 
 import java.io.File;
-=======
+
 import com.example.newbanner.R;
 
->>>>>>> 1.0:app/src/main/java/com/example/newbanner/activity/TakeActivity.java
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,12 +39,14 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
+import static android.R.attr.breadCrumbShortTitle;
 import static android.R.attr.handle;
 import static android.R.attr.path;
 import static com.example.newbanner.fragment.Menu_main_fragment.verifyStoragePermissions;
 
-public class TakeActivity extends AppCompatActivity {
+public class TakeActivity extends BaseActivity implements View.OnClickListener{
 
+    public static final int FLAG_QUERY = 00001;
     private TextView textView_spinnerfirst, textView_spinnersecond, textView_spinnerthird;
     private Spinner spinnerFirst, spinnerSecond, spinnerThird;
     private ArrayAdapter adapter_first = null;
@@ -53,7 +54,7 @@ public class TakeActivity extends AppCompatActivity {
     private ArrayAdapter adapter_third = null;
 
     private RecyclerView recyclerView;
-  static List<TakeMenuList> lists = new ArrayList<>();//传入RecycleviewAdapter的list数据
+    static List<TakeMenuList> lists = new ArrayList<>();//传入RecycleviewAdapter的list数据
     static List<TakeMenuList> listold;//存储Bmob中查询数据
     static String path = Environment.getExternalStorageDirectory().getAbsolutePath();
     List list_first = new ArrayList();
@@ -64,13 +65,10 @@ public class TakeActivity extends AppCompatActivity {
     public String point;
     public String thingsweight;
 
-    private static String[] area = {" ", "1-5栋", "6-10栋", "11-15栋", "16-20栋", "21-23栋", "24-29栋", "30-32栋", "33-35栋"};
-    private static String[] type = {" ", "东门", "三食堂", "五食堂", "一食堂", "冶金楼", "唯品会", "聚美优品", "其他"};
+    private static String[] area = {" ", "东门", "三食堂", "五食堂", "一食堂", "冶金楼", "唯品会", "聚美优品", "其他"};
+    private static String[] type = {" ", "1-5栋", "6-10栋", "11-15栋", "16-20栋", "21-23栋", "24-29栋", "30-32栋", "33-35栋"};
     private static String[] weight = {" ", "1-3瓶水", "3", "5"};
 
-    static List<String> listEndPlace = new ArrayList<>();
-    static List<String> listTakePlace = new ArrayList<>();
-    static List<String> listWeight = new ArrayList<>();
 
     static boolean flag = true;
 
@@ -80,8 +78,8 @@ public class TakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_take);
         initViews();//初始化布局
         setListeners();//绑定监听
-//        listQuery("001");
-        setDatas("001");//数据处理
+        listQuery("001");
+        setDatas();//数据处理
         setAdapters();//设置spinner下拉框样式
         setSpinners(adapter_first, spinnerFirst);
         setSpinners(adapter_second, spinnerSecond);
@@ -89,52 +87,7 @@ public class TakeActivity extends AppCompatActivity {
         setList();
 
 //        saveDataBmob();
-
         spinnerFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        dormitory = "";
-                        break;
-                    case 1:
-                        dormitory = "1-5栋";
-                        break;
-                    case 2:
-                        dormitory = "6-10栋";
-                        break;
-                    case 3:
-                        dormitory = "11-15栋";
-                        break;
-                    case 4:
-                        dormitory = "16-20栋";
-                        break;
-                    case 5:
-                        dormitory = "21-23栋";
-                        break;
-                    case 6:
-                        dormitory = "24-29栋";
-                        break;
-                    case 7:
-                        dormitory = "30-32栋";
-                        break;
-                    case 8:
-                        dormitory = "33-35栋";
-                        break;
-
-                }
-                setRecycleView(screenData(lists));
-                textView_spinnerfirst.setText(dormitory);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spinnerSecond.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -172,7 +125,50 @@ public class TakeActivity extends AppCompatActivity {
                     Log.d("lists未被传值", "true");
                 }
                 setRecycleView(screenData(lists));
-                textView_spinnersecond.setText(point);
+                textView_spinnerfirst.setText(point);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerSecond.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                switch (position) {
+                    case 0:
+                        dormitory = "";
+                        break;
+                    case 1:
+                        dormitory = "1-5栋";
+                        break;
+                    case 2:
+                        dormitory = "6-10栋";
+                        break;
+                    case 3:
+                        dormitory = "11-15栋";
+                        break;
+                    case 4:
+                        dormitory = "16-20栋";
+                        break;
+                    case 5:
+                        dormitory = "21-23栋";
+                        break;
+                    case 6:
+                        dormitory = "24-29栋";
+                        break;
+                    case 7:
+                        dormitory = "30-32栋";
+                        break;
+                    case 8:
+                        dormitory = "33-35栋";
+                        break;
+
+                }
+                setRecycleView(screenData(lists));
+                textView_spinnersecond.setText(dormitory);
             }
 
             @Override
@@ -244,7 +240,7 @@ public class TakeActivity extends AppCompatActivity {
 
     public List<TakeMenuList> screenData(List<TakeMenuList> express) {
         List<TakeMenuList> list = new ArrayList<>();
-        if (express==null){
+        if (express == null) {
             Log.d("express为空", "true");
         }
 
@@ -276,6 +272,11 @@ public class TakeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 创建RecycleView
+     *
+     * @param list
+     */
     private void setRecycleView(List<TakeMenuList> list) {
         RecycleviewAdapter recycleviewAdapter = new RecycleviewAdapter(this, list);
         Log.d("NewBanner", String.valueOf(list.size()));
@@ -287,9 +288,9 @@ public class TakeActivity extends AppCompatActivity {
      * 设置下拉框样式
      */
     private void setAdapters() {
-        adapter_first = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list_first);
-        adapter_second = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list_second);
-        adapter_third = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list_third);
+        adapter_first = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, list_first);
+        adapter_second = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, list_second);
+        adapter_third = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, list_third);
     }
 
     private void setSpinners(final ArrayAdapter adapter, Spinner spinner) {
@@ -300,7 +301,7 @@ public class TakeActivity extends AppCompatActivity {
     /**
      * 下拉框，订单展示数据处理
      */
-    private void setDatas(String userID) {
+    private void setDatas() {
         for (int i = 0; i < area.length; i++) {
             list_first.add(area[i]);
         }
@@ -310,40 +311,7 @@ public class TakeActivity extends AppCompatActivity {
         for (int i = 0; i < weight.length; i++) {
             list_third.add(weight[i]);
         }
-        BmobQuery<TakeMenu> bmobQuery = new BmobQuery();
-        bmobQuery.addWhereEqualTo("userId", "001");
-        bmobQuery.setLimit(50);
-        bmobQuery.findObjects(new FindListener<TakeMenu>() {
-            Handler handle=new Handler(){
 
-                public void handleMessage(Message msg) {
-                    switch (msg.what){
-                        case 00001:
-                       List<TakeMenu>list=(List)msg.obj;
-                            for (TakeMenu takemenu:list){
-                                TakeMenuList takeMenuList = new TakeMenuList(R.drawable.back_bg, takemenu.getMenuBegin(), takemenu.getMenuEnd(), "3");
-                                lists.add(takeMenuList);
-                            }
-                            setRecycleView(screenData(lists));
-                            break;
-                    }
-
-                }
-            };
-            @Override
-            public void done(List<TakeMenu> list, BmobException e) {
-                if (e == null) {
-                    Log.d("一共查到", list.size() + "条数据");
-                    Message message=handle.obtainMessage();
-                    message.what= 00001;
-                    message.obj=list;
-                    handle.sendMessage(message);
-                } else {
-                    Log.d("查询失败：", e.getMessage());
-                }
-            }
-        });
-        setRecycleView(screenData(lists));
     }
 
     private void setListeners() {
@@ -368,25 +336,48 @@ public class TakeActivity extends AppCompatActivity {
     public void listQuery(String userID) {
 
         BmobQuery<TakeMenu> bmobQuery = new BmobQuery();
-        bmobQuery.addWhereEqualTo("userId", userID);
+        bmobQuery.addWhereEqualTo("userId", "001");
         bmobQuery.setLimit(50);
         bmobQuery.findObjects(new FindListener<TakeMenu>() {
+            Handler handle = new Handler() {
+
+                public void handleMessage(Message msg) {
+                    switch (msg.what) {
+                        case FLAG_QUERY:
+                            List<TakeMenu> list = (List) msg.obj;
+                            for (TakeMenu takemenu : list) {
+                                TakeMenuList takeMenuList = new TakeMenuList(takemenu.getUserheadImage().getUrl(), takemenu.getMenuBegin(), takemenu.getMenuEnd(), "3");
+                                lists.add(takeMenuList);
+                            }
+                            setRecycleView(screenData(lists));
+                            break;
+                    }
+
+                }
+            };
+
             @Override
             public void done(List<TakeMenu> list, BmobException e) {
                 if (e == null) {
                     Log.d("一共查到", list.size() + "条数据");
-                    for (TakeMenu takeMenu : list) {
-//                        listEndPlace.add(takeMenu.getMenuEnd());
-//                        listTakePlace.add(takeMenu.getMenuBegin());
-//                        listWeight.add(takeMenu.getWeight());
-//                        Log.d("listEndPlace",listEndPlace.get(0));
-                    }
+                    Message message = handle.obtainMessage();
+                    message.what = FLAG_QUERY;
+                    message.obj = list;
+                    handle.sendMessage(message);
                 } else {
                     Log.d("查询失败：", e.getMessage());
                 }
             }
         });
+        setRecycleView(screenData(lists));
 
+    }
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.take_back:
+
+                break;
+        }
     }
 
 }

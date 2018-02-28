@@ -27,7 +27,7 @@
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:paddingTop="10dip"
-            android:text="@string/timepicker_finish"
+            android:text="111"
             android:textColor="#8A7ED8"
             android:textSize="15sp" />
     </FrameLayout>

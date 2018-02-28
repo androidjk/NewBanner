@@ -14,6 +14,7 @@ public class TakeMenu extends BmobObject {
     private String menuBegin;//取快递的快递点
     private String weight;//快递的重量
 
+
     public TakeMenu(BmobFile userheadImage,String userId,String menuEnd,String menuBegin,String weight) {
         super();
         this.userheadImage=userheadImage;
