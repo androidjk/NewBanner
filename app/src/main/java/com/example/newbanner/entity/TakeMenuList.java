@@ -6,25 +6,24 @@ package com.example.newbanner.entity;
 
 public class TakeMenuList {
 
-    private int circleImageViewId;
-    private String beginTextView;
-    private String endTextView;
-    private String goal;
+    private String beginTextView;//快递点
+    private String endTextView;//快递送达地点
+    private String goal;//积分
+    private String nickUrl;//头像URL地址
 
-    public TakeMenuList(int circleImageViewId, String beginTextView, String endTextView, String goal) {
+    public TakeMenuList(String nickUrl, String beginTextView, String endTextView, String goal) {
         super();
         this.beginTextView = beginTextView;
-        this.circleImageViewId = circleImageViewId;
         this.endTextView = endTextView;
         this.goal = goal;
+        this.nickUrl=nickUrl;
+    }
+    public String getNickUrl() {
+        return nickUrl;
     }
 
-    public int getCircleImageViewId() {
-        return this.circleImageViewId;
-    }
-
-    public void setCircleImageViewId(int circleImageViewId) {
-        this.circleImageViewId = circleImageViewId;
+    public void setNickUrl(String nickUrl) {
+        this.nickUrl = nickUrl;
     }
 
     public String getBeginTextView() {

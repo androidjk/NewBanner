@@ -10,7 +10,6 @@
         android:id="@+id/paihangbang_head"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-
         android:background="#8BC34A">
 
         <ImageView
@@ -19,12 +18,19 @@
             android:background="@drawable/backw"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"/>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="排行榜"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="20dp"
+            android:textColor="#fcf8f8"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/paihangbang_first"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="180dp"
         android:background="@drawable/back"
         android:layout_below="@+id/paihangbang_head"
         android:layout_alignParentLeft="true"

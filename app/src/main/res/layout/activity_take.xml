@@ -13,6 +13,7 @@
         android:background="#8BC34A">
 
         <ImageView
+            android:id="@+id/take_back"
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:background="@drawable/backw"
@@ -43,7 +44,7 @@
                 android:id="@+id/textview_first"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="区域：" />
+                android:text="目的地：" />
 
             <TextView
                 android:id="@+id/take_spinner_text1"
@@ -55,7 +56,8 @@
                 android:id="@+id/take_spinner_first"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/take_spinner_text1">
+                android:layout_below="@id/take_spinner_text1"
+                >
 
             </Spinner>
         </RelativeLayout>
@@ -69,7 +71,7 @@
                 android:id="@+id/take_textview_second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="快递品牌：" />
+                android:text="快递点：" />
 
             <TextView
                 android:id="@+id/take_spinner_text2"
@@ -109,8 +111,12 @@
 
             </Spinner>
         </RelativeLayout>
-    </LinearLayout>
 
+    </LinearLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#b3abab"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/take_recycleView"
         android:layout_width="match_parent"
