@@ -41,7 +41,8 @@ dependencies {
     //bmob-sms ：Bmob单独为短信服务提供的包
 
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'cn.bmob.android:bmob-im:2.0.9@aar'
+    compile 'cn.bmob.android:bmob-sdk:3.5.6'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -51,6 +52,7 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
     compile 'cn.bmob.android:bmob-im:2.0.5@aar'
     compile 'cn.bmob.android:bmob-sms:1.0.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cn.bmob.android:http-legacy:1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.martin90s:ImagePicker:v1.3.2'
@@ -60,4 +62,6 @@ dependencies {
     compile 'org.litepal.android:core:1.5.0'
     compile 'com.android.support:cardview-v7:23.2.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/alibaba-cloudapi-sdk-core-1.1.1.jar')
+    compile 'com.bigkoo:alertview:1.0.3'
 }

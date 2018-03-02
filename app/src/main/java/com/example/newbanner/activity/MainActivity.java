@@ -24,6 +24,7 @@ import com.example.newbanner.R;
 import com.example.newbanner.adapter.ImageAdapter;
 import com.example.newbanner.fragment.Menu_main_fragment;
 import com.example.newbanner.fragment.Menu_person_fragment;
+import com.example.newbanner.util.ConversationUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .add(R.id.menu_container,mainPerson)
                 .hide(mainPerson)
                 .commit();
+        ConversationUtil.getInstance().connect();
     }
 
     private void initViews() {

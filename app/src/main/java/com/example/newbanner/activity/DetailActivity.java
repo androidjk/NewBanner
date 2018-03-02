@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -34,10 +36,6 @@ public class DetailActivity extends BaseActivity {
 
     @Bind(R.id.cm_person)
     CircleImageView cmPerson;
-    @Bind(R.id.et_true_name)
-    EditText etTrueName;
-    @Bind(R.id.et_student_sex)
-    EditText etStudentSex;
     @Bind(R.id.et_student_age)
     EditText etStudentAge;
     @Bind(R.id.et_student_telNum)
@@ -51,14 +49,24 @@ public class DetailActivity extends BaseActivity {
     @Bind(R.id.btn_student_ensure)
     Button btnStudentEnsure;
     public static final int REQUEST_CODE_AVATAR = 100;
+    @Bind(R.id.tv_true_name)
+    TextView tvTrueName;
+    @Bind(R.id.tv_student_sex)
+    TextView tvStudentSex;
+    @Bind(R.id.ll_information)
+    LinearLayout llInformation;
     private String cmUrl;
     public static final String AVATAR_FILE_NAME = "avatar.png";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detali);
         ButterKnife.bind(this);
         setToolBar(R.id.tb_personal);
+        Intent intent = getIntent();
+        tvStudentSex.setText(intent.getStringExtra("idInfo_sex"));
+        tvTrueName.setText(intent.getStringExtra("idInfo_name"));
     }
 
     @OnClick({R.id.cm_person, R.id.btn_student_ensure})
@@ -87,11 +95,11 @@ public class DetailActivity extends BaseActivity {
 
     private void initSave() {
         if (!etStudentAge.getText().toString().isEmpty() && !etStudentClassName.getText().toString().isEmpty()
-                &&!etStudentCollega.getText().toString().isEmpty() && !etStudentSex.getText().toString().isEmpty()
-                &&!etStudentTelNum.getText().toString().isEmpty() &&!etTrueName.getText().toString().isEmpty()) {
+                && !etStudentCollega.getText().toString().isEmpty() && !tvStudentSex.getText().toString().isEmpty()
+                && !etStudentTelNum.getText().toString().isEmpty() && !tvTrueName.getText().toString().isEmpty()) {
             final Student student = Student.getCurrentUser(Student.class);
-            student.setName(etTrueName.getText().toString());
-            student.setSex(etStudentSex.getText().toString());
+            student.setName(tvStudentSex.getText().toString());
+            student.setSex(tvTrueName.getText().toString());
             student.setCollega(etStudentCollega.getText().toString());
             student.setClassName(etStudentClassName.getText().toString());
             student.setAge(Integer.parseInt(etStudentAge.getText().toString()));
@@ -101,14 +109,14 @@ public class DetailActivity extends BaseActivity {
                 public void done(BmobException e) {
                     if (e == null) {
                         //finish
-                    }else if (e.getErrorCode() == 9016){
+                    } else if (e.getErrorCode() == 9016) {
                         Toast.makeText(mActivity, "网络无连接( ▼-▼ )", Toast.LENGTH_SHORT).show();
-                    } else{
+                    } else {
                         Toast.makeText(mActivity, "更新用户信息失败", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-        }else {
+        } else {
             Toast.makeText(mActivity, "您有信息没有填完", Toast.LENGTH_SHORT).show();
         }
     }
@@ -149,6 +157,7 @@ public class DetailActivity extends BaseActivity {
             });
         }
     }
+
     public void updateHead() {
         Student student = Student.getCurrentUser(Student.class);
         student.setNickUrl(cmUrl);

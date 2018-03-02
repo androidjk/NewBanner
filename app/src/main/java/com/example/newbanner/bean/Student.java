@@ -15,7 +15,6 @@ public class Student extends BmobUser {
     private String collega;
     private String className;
     private String nickUrl;
-
     public int getSum() {
         return sum;
     }

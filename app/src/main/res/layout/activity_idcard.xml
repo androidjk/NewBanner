@@ -23,20 +23,26 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/head"
+                android:src="@drawable/cammer"
                 android:layout_marginTop="80dp"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/cm_person"/>
+                android:id="@+id/iv_cammer"/>
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/iv_cammer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请点击上传身份证正面照"/>
             <LinearLayout
                 android:id="@+id/ll_information"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_width="300dp"
                 android:layout_height="250dp"
-                android:layout_below="@+id/cm_person"
+                android:layout_below="@+id/iv_cammer"
                 android:layout_centerHorizontal="true">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -52,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="5dp"
-                        android:text="个人信息"
+                        android:text="身份证信息"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         />
@@ -94,6 +100,7 @@
                         android:textSize="13sp"
                         />
                     <TextView
+                        android:maxLines="1"
                         android:id="@+id/tv_student_sex"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -111,15 +118,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
-                        android:text="年龄："
+                        android:text="名族："
                         android:textColor="@color/black"
                         android:textSize="13sp"
                         />
-                    <EditText
-                        android:maxLines="1"
-                        android:inputType="number"
-                        android:background="@null"
-                        android:id="@+id/et_student_age"
+                    <TextView
+                        android:id="@+id/tv_student_nationality"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -136,15 +140,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
-                        android:text="电话号码："
+                        android:text="出生日期："
                         android:textColor="@color/black"
                         android:textSize="13sp"
                         />
-                    <EditText
-                        android:id="@+id/et_student_telNum"
-                        android:background="@null"
+                    <TextView
                         android:maxLines="1"
-                        android:inputType="number"
+                        android:id="@+id/_student_age"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -152,6 +154,7 @@
                         android:textSize="13sp"
                         />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
@@ -161,38 +164,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
-                        android:text="学院："
+                        android:text="身份证号："
                         android:textColor="@color/black"
                         android:textSize="13sp"
                         />
-                    <EditText
-                        android:maxLines="1"
-                        android:background="@null"
-                        android:id="@+id/et_student_collega"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="13sp"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="班级："
-                        android:textColor="@color/black"
-                        android:textSize="13sp"
-                        />
-                    <EditText
-                        android:maxLines="1"
-                        android:background="@null"
-                        android:id="@+id/et_student_className"
+                        android:id="@+id/tv_student_idNum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -217,21 +194,21 @@
             android:paddingTop="12dp"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:text="完善信息"
+            android:text="实名认证"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </android.support.v7.widget.Toolbar>
     <Button
         android:textSize="15sp"
-        android:id="@+id/btn_student_ensure"
+        android:id="@+id/btn_id_ensure"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="430dp"
         android:background="@drawable/check_border_all"
-        android:text="确 定"
+        android:text="下一步"
         android:textColor="#FFF" />
 </RelativeLayout>
