@@ -8,14 +8,14 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class AdviceMessage extends BmobObject {
-    private String adviceName;
+    private String adviceId;
     private String adviceContext;
 
-    public void setAdviceName(String adviceName){
-        this.adviceName=adviceName;
+    public void setAdviceId(String adviceName){
+        this.adviceId=adviceName;
     }
-    public String getAdviceName(){
-        return this.adviceName;
+    public String getAdviceId(){
+        return this.adviceId;
     }
     public void setAdviceContext(String adviceContext){
         this.adviceContext=adviceContext;

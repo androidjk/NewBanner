@@ -27,14 +27,19 @@ import com.example.newbanner.R;
 import com.example.newbanner.activity.PublishActivity;
 import com.example.newbanner.activity.TakeActivity;
 import com.example.newbanner.adapter.ImageAdapter;
+import com.example.newbanner.bean.AdviceMessage;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 /**
@@ -44,6 +49,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 public class Menu_main_fragment extends Fragment implements View.OnTouchListener, View.OnClickListener {
     //权限
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    public static final int FLAG_ADVICE = 1000;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -54,7 +60,8 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
     private LinearLayout menu_main_shouye;
 
     private String textContent[];
-    List<String> list = new ArrayList<>();
+    //放校园通知的list
+    static List<String> list = new ArrayList<>();
     // 自定义轮播图的资源
     private int[] mImageResIds = {R.drawable.back_bg, R.drawable.edit_bg, R.drawable.help};
     // 放轮播图片的ImageView 的list
@@ -72,42 +79,48 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        list.add("123456");
-        list.add("456789");
-        list.add("78915551");
         initViews();
         setListeners();
-        changeTextContent();
+        setAdviceContext();//加载校园通知内容
+
 
 //        setImages();
-        //bmob中修改校园通知
-//        final AdviceMessage adviceMessage=new AdviceMessage();
-//        adviceMessage.setObjectId("0101");
-//        adviceMessage.setAdviceName("校园通知");
-//        adviceMessage.setAdviceContext("bmob第一条通知");
-//        adviceMessage.save(new SaveListener<String>() {
-//            @Override
-//            public void done(String s, BmobException e) {
-//
-//                if (e==null){
-//                    Log.d("添加数据成功，objectId为",adviceMessage.getObjectId());
-//                }
-//                else {
-//                    Log.d("添加数据失败",e.getMessage());
-//                }
-//            }
-//        });
-//        adviceMessage.setAdviceContext("修改后的Context");
-//        adviceMessage.update("0d2ef4aa5d", new UpdateListener() {
-//            @Override
-//            public void done(BmobException e) {
-//                if (e==null){
-//                    Log.d("修改后的通知内容是：",adviceMessage.getAdviceContext());
-//                }else {
-//                    Log.d("修改失败",e.getMessage());
-//                }
-//            }
-//        });
+    }
+
+    private void setAdviceContext() {
+        final Handler handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case FLAG_ADVICE:
+                        List<AdviceMessage>list1= (List) msg.obj;
+                        if (list1==null){
+                            Log.d("list1","null");
+                        }else {
+                            for (AdviceMessage adviceMessage:list1){
+                                list.add(adviceMessage.getAdviceContext());
+                            }
+                            Log.d("list1.1的长度为",list.size()+" "+list.toString());
+                        }
+                        changeTextContent();
+                        break;
+                }
+            }
+        };
+        BmobQuery<AdviceMessage>query=new BmobQuery();
+        query.addWhereEqualTo("adviceId","0001");
+        query.setLimit(50);
+        query.findObjects(new FindListener<AdviceMessage>() {
+            @Override
+            public void done(List<AdviceMessage> list, BmobException e) {
+                Log.d("list的长度为",list.size()+"");
+                    Message message=handler.obtainMessage();
+                    message.what= FLAG_ADVICE;
+                    message.obj=list;
+                    handler.sendMessage(message);
+            }
+        });
     }
 
     /**
@@ -170,12 +183,18 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
         home_help_ask.setOnClickListener(this);
     }
 
-
+    /**
+     * 改变校园通知内容
+     */
     private void changeTextContent() {
         text_1 = (TextView) getView().findViewById(R.id.tv_text1);
         text_2 = (TextView) getView().findViewById(R.id.tv_text2);
         text_3 = (TextView) getView().findViewById(R.id.tv_text3);
 
+        if (list==null){
+            Log.d("list不存在","true");
+//            list.add("又是平静的一天");
+        }
         for (int i = 0; i < list.size(); i++) {
             switch (i) {
                 case 0:

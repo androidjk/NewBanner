@@ -88,14 +88,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:singleLine="true"
-                        android:text="当前天气状况当前天气状况当前"
                         android:textSize="@dimen/textsizecontent"/>
                     <TextView
                         android:id="@+id/tv_text3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:singleLine="true"
-                        android:text="123456465"
                         android:textSize="@dimen/textsizecontent"/>
 
                     <TextView
@@ -103,7 +101,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:singleLine="true"
-                        android:text="123456"
                         android:textSize="@dimen/textsizecontent" />
 
                 </ViewFlipper>
