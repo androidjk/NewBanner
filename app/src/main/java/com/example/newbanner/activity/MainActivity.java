@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .add(R.id.menu_container,mainPerson)
                 .hide(mainPerson)
                 .commit();
-        ConversationUtil.getInstance().connect();
+//        ConversationUtil.getInstance().connect();
     }
 
     private void initViews() {

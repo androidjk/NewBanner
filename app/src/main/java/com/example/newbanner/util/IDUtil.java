@@ -14,13 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -61,22 +55,7 @@ public class IDUtil {
         }
         return result;
     }
-    public static void requestIData(String base, okhttp3.Callback callback) {
-        String host = "https://dm-51.data.aliyun.com";
-        String path = "/rest/160601/ocr/ocr_idcard.json";
-        String appCode = "8fC229380104af06b4ef80be7c8579b42";
-        String appKey = "24801358";
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder().add("image", base).add("configure", "{\\\"face\\\"}").build();
-        Request request = new Request.Builder()
-                .url( host+path)
-                .header("Authorization", "APPCODE " + appCode)
-                .header("Content-Type", "application/json; charset=UTF-8")
-                .header("X-Ca-Key", appKey)
-                .post(body)
-                .build();
-        client.newCall(request).enqueue(callback);
-    }
+
     public static void saveFile(String str) {
         String filePath = null;
         boolean hasSDCard = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);

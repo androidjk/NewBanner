@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.newbanner.R;
-import com.example.newbanner.entity.TakeMenuList;
+import com.example.newbanner.bean.ExpressHelp;
 
 import java.util.List;
 
@@ -19,12 +18,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by asus1 on 2018/2/22.
  */
 
-public class RecycleviewAdapter extends RecyclerView.Adapter<RecycleviewAdapter.RecouseHolder>{
+public class RecycleviewAdapter extends RecyclerView.Adapter<RecycleviewAdapter.RecouseHolder> implements View.OnClickListener{
 
-    List<TakeMenuList>lists;
+    List<ExpressHelp>lists;
     Context context;
 
-    public RecycleviewAdapter(Context context,List<TakeMenuList>lists) {
+    public RecycleviewAdapter(Context context,List<ExpressHelp>lists) {
         super();
         this.context=context;
         this.lists=lists;
@@ -32,25 +31,36 @@ public class RecycleviewAdapter extends RecyclerView.Adapter<RecycleviewAdapter.
 
     @Override
     public RecouseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecouseHolder(LayoutInflater.from(context).inflate(R.layout.take_recycleview,null));
+        View view=LayoutInflater.from(context).inflate(R.layout.take_recycleview,null);
+        RecouseHolder recouseHolder=new RecouseHolder(view);
+        view.setOnClickListener(this);
+        return recouseHolder;
     }
 
     @Override
-    public void onBindViewHolder(RecouseHolder holder, int position) {
+    public void onBindViewHolder(final RecouseHolder holder, int position) {
 
-        TakeMenuList takeMenuList=lists.get(position);
+        ExpressHelp expressHelp=lists.get(position);
 
-        Glide.with(context)
-                .load(takeMenuList.getNickUrl())
-                .into(holder.circleImageView);
-        holder.begin.setText(takeMenuList.getBeginTextView());
-        holder.end.setText(takeMenuList.getEndTextView());
-        holder.goal.setText(takeMenuList.getGoal());
+//        Glide.with(context)
+//                .load(expressHelp)
+//                .into(holder.circleImageView);
+        holder.begin.setText(expressHelp.getPointName());
+        holder.end.setText(expressHelp.getAddressAccuracy());
+        holder.goal.setText(expressHelp.getWeight());
+        holder.itemView.setTag(position);//将position保存在itemView的Tag中，以便点击时进行获取
     }
 
     @Override
     public int getItemCount() {
         return lists==null?0:lists.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (clickListener!=null){
+           clickListener.onItemClick(v,(int)v.getTag());
+        }
     }
 
     public class RecouseHolder extends RecyclerView.ViewHolder {
@@ -65,4 +75,12 @@ public class RecycleviewAdapter extends RecyclerView.Adapter<RecycleviewAdapter.
             goal=(TextView)itemView.findViewById(R.id.take_menu_jifen);
         }
     }
+    private OnItemClickListener clickListener=null;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        clickListener = onItemClickListener;
+    }
+    public static interface OnItemClickListener {
+        void onItemClick(View view , int position);
+    }
 }
+

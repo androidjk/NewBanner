@@ -2,7 +2,7 @@
 <resources>
     <dimen name="dot_width">50px</dimen>
     <dimen name="dot_height">50px</dimen>
-    <dimen name="textsizecontent">22dp</dimen>
+    <dimen name="textsizecontent">20dp</dimen>
     <dimen name="textSizeTitle">20dp</dimen>
     <dimen name="menuTextSize">12sp</dimen>
 </resources>

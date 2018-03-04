@@ -246,7 +246,7 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_today:
-                Intent intent=new Intent(v.getContext(),Paihangbang.class);
+                Intent intent = new Intent(v.getContext(), Paihangbang.class);
                 startActivity(intent);
                 break;
             case R.id.home_today_firstL:
@@ -258,18 +258,15 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
             case R.id.home_today_thirdL:
                 Toast.makeText(getContext(), "You Clicked The ThirdImage！", Toast.LENGTH_SHORT).show();
                 break;
-<<<<<<< HEAD
+
             case R.id.home_help_sendL:
-                Intent intent1=new Intent(v.getContext(), TakeActivity.class);
-=======
-            case R.id.home__help_askL:
-                Intent intent1=new Intent(v.getContext(), PublishActivity.class);
->>>>>>> origin/master
+                Intent intent1 = new Intent(v.getContext(), TakeActivity.class);
                 startActivity(intent1);
-//                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home__help_askL:
-                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(v.getContext(), PublishActivity.class);
+                startActivity(intent2);
+//                Toast.makeText(getContext(), "You Clicked The 请求帮助", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

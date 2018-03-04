@@ -5,8 +5,9 @@ import java.io.Serializable;
 import cn.bmob.v3.BmobObject;
 
 
-
-
+/**
+ * 快递订单
+ */
 public class ExpressHelp extends BmobObject implements Serializable {
     /**
      *发布者
@@ -61,6 +62,25 @@ public class ExpressHelp extends BmobObject implements Serializable {
      */
     private long publishTime;
 
+    public ExpressHelp(){
+
+    }
+
+    /**
+     * 快递订单信息初始化
+     * @param student
+     * @param pointName
+     * @param addressAccuracy
+     * @param weight
+     * @param pickupCode
+     */
+    public ExpressHelp(Student student,String pointName,String addressAccuracy,String weight,String pickupCode){
+        this.user=student;
+        this.pointName=pointName;
+        this.addressAccuracy=addressAccuracy;
+        this.weight=weight;
+        this.pickupCode=pickupCode;
+    }
     public boolean isState() {
         return state;
     }

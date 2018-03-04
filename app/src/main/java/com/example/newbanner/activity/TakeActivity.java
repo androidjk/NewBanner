@@ -20,9 +20,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.newbanner.Bmobentity.TakeMenu;
+
 import com.example.newbanner.adapter.RecycleviewAdapter;
-import com.example.newbanner.entity.TakeMenuList;
+import com.example.newbanner.bean.ExpressHelp;
+import com.example.newbanner.bean.Student;
+
 
 import java.io.File;
 
@@ -43,11 +45,13 @@ import cn.bmob.v3.listener.UploadFileListener;
 import static android.R.attr.breadCrumbShortTitle;
 import static android.R.attr.handle;
 import static android.R.attr.path;
+import static android.R.attr.switchMinWidth;
 import static com.example.newbanner.fragment.Menu_main_fragment.verifyStoragePermissions;
 
-public class TakeActivity extends BaseActivity implements View.OnClickListener{
+public class TakeActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int FLAG_QUERY = 00001;
+    public static final int FLAG_LISTALL = 0002;
     private TextView textView_spinnerfirst, textView_spinnersecond, textView_spinnerthird;
     private Spinner spinnerFirst, spinnerSecond, spinnerThird;
     private ArrayAdapter adapter_first = null;
@@ -55,8 +59,7 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener{
     private ArrayAdapter adapter_third = null;
 
     private RecyclerView recyclerView;
-    static List<TakeMenuList> lists = new ArrayList<>();//传入RecycleviewAdapter的list数据
-    static List<TakeMenuList> listold;//存储Bmob中查询数据
+    static List<ExpressHelp> lists = new ArrayList<>();//传入RecycleviewAdapter的list数据
     static String path = Environment.getExternalStorageDirectory().getAbsolutePath();
     List list_first = new ArrayList();
     List list_second = new ArrayList();
@@ -79,7 +82,7 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_take);
         initViews();//初始化布局
         setListeners();//绑定监听
-        listQuery("001");
+        listQuery(null);
         setDatas();//数据处理
         setAdapters();//设置spinner下拉框样式
         setSpinners(adapter_first, spinnerFirst);
@@ -214,56 +217,45 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void saveDataBmob() {
-        verifyStoragePermissions(this);
-        String picPath = path + "/newbanner/111.png";//"/ajinkai/jinkai.png"
-        final BmobFile file = new BmobFile(new File(picPath));
-        file.upload(new UploadFileListener() {
+
+        ExpressHelp expressHelp = new ExpressHelp(null, "五食堂", "1-5栋", "3","0101");
+        expressHelp.save(new SaveListener<String>() {
             @Override
-            public void done(BmobException e) {
+            public void done(String s, BmobException e) {
                 if (e == null) {
-                    TakeMenu takeMenu = new TakeMenu(file, "001", "1-4栋", "五食堂", "2瓶水");//头像，用户ID,送达地点end，初始快递点begin，快递重量
-                    takeMenu.save(new SaveListener<String>() {
-                        @Override
-                        public void done(String s, BmobException e) {
-                            if (e == null) {
-                                Log.d("存储", "成功");
-                            } else {
-                                Log.d("失败2", e.getMessage());
-                            }
-                        }
-                    });
+                    Log.d("存储", "成功");
                 } else {
-                    Log.d("失败1", e.getMessage());
+                    Log.d("失败", e.getMessage());
                 }
             }
         });
     }
 
-    public List<TakeMenuList> screenData(List<TakeMenuList> express) {
-        List<TakeMenuList> list = new ArrayList<>();
+    public List<ExpressHelp> screenData(List<ExpressHelp> express) {
+        List<ExpressHelp> list = new ArrayList<>();
         if (express == null) {
             Log.d("express为空", "true");
         }
 
-        for (TakeMenuList takeMenuList : express) {
+        for (ExpressHelp expressHelp : express) {
             if (!TextUtils.isEmpty(dormitory)) {
-                if (!takeMenuList.getEndTextView().equals(dormitory)) {
+                if (!expressHelp.getAddressAccuracy().equals(dormitory)) {
                     continue;
                 }
             }
 
             if (!TextUtils.isEmpty(point)) {
-                if (!takeMenuList.getBeginTextView().equals(point)) {
+                if (!expressHelp.getPointName().equals(point)) {
                     continue;
                 }
             }
 
             if (!TextUtils.isEmpty(thingsweight)) {
-                if (!takeMenuList.getGoal().equals(thingsweight)) {
+                if (!expressHelp.getWeight().equals(thingsweight)) {
                     continue;
                 }
             }
-            list.add(takeMenuList);
+            list.add(expressHelp);
         }
 
         return list;
@@ -278,11 +270,18 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener{
      *
      * @param list
      */
-    private void setRecycleView(List<TakeMenuList> list) {
+    private void setRecycleView(List<ExpressHelp> list) {
         RecycleviewAdapter recycleviewAdapter = new RecycleviewAdapter(this, list);
         Log.d("NewBanner", String.valueOf(list.size()));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recycleviewAdapter.setOnItemClickListener(new RecycleviewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(view.getContext(), position + "", Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setAdapter(recycleviewAdapter);
+
     }
 
     /**
@@ -333,52 +332,93 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener{
         recyclerView = (RecyclerView) findViewById(R.id.take_recycleView);
     }
 
-
+    /**
+     * 订单查找
+     *
+     * @param userID
+     */
     public void listQuery(String userID) {
+        Log.d("test ", "test");
+//        if (userID == null) {
+//            BmobQuery<ExpressHelp> query = new BmobQuery<>();
+//            query.setLimit(8).setSkip(1).order("-createdAt")
+//                    .findObjects(new FindListener<ExpressHelp>() {
+//                        Handler handler = new Handler() {
+//                            @Override
+//                            public void handleMessage(Message msg) {
+//                                super.handleMessage(msg);
+//                                switch (msg.what) {
+//                                    case FLAG_LISTALL:
+//                                        List<ExpressHelp> list = (List) msg.obj;
+//                                        for (ExpressHelp expressHelp : list) {
+//                                            ExpressHelp express = new ExpressHelp(expressHelp.getUser(), expressHelp.getPointName(), expressHelp.getAddressAccuracy(), "3","0101");
+//                                            lists.add(express);
+//                                        }
+//                                        setRecycleView(lists);
+//                                        break;
+//                                }
+//                            }
+//                        };
+//
+//                        @Override
+//                        public void done(List<ExpressHelp> object, BmobException e) {
+//                            if (e == null) {
+//
+//                                Message message = handler.obtainMessage();
+//                                message.what = FLAG_LISTALL;
+//                                message.obj = object;
+//                                handler.sendMessage(message);
+//                            } else {
+//
+//                            }
+//                        }
+//                    });
+//        } else {
+            BmobQuery<ExpressHelp> bmobQuery = new BmobQuery();
+            bmobQuery.addWhereEqualTo("pickupCode", "0101");
+            bmobQuery.setLimit(50);
+            bmobQuery.findObjects(new FindListener<ExpressHelp>() {
+                Handler handle = new Handler() {
 
-        BmobQuery<TakeMenu> bmobQuery = new BmobQuery();
-        bmobQuery.addWhereEqualTo("userId", "001");
-        bmobQuery.setLimit(50);
-        bmobQuery.findObjects(new FindListener<TakeMenu>() {
-            Handler handle = new Handler() {
+                    public void handleMessage(Message msg) {
+                        switch (msg.what) {
+                            case FLAG_QUERY:
+                                List<ExpressHelp> list = (List) msg.obj;
+                                for (ExpressHelp expressHelp : list) {
+                                    ExpressHelp express = new ExpressHelp(expressHelp.getUser(), expressHelp.getPointName(), expressHelp.getAddressAccuracy(), "3","0101");
+                                    lists.add(express);
+                                }
+                                setRecycleView(screenData(lists));
+                                break;
+                        }
 
-                public void handleMessage(Message msg) {
-                    switch (msg.what) {
-                        case FLAG_QUERY:
-                            List<TakeMenu> list = (List) msg.obj;
-                            for (TakeMenu takemenu : list) {
-                                TakeMenuList takeMenuList = new TakeMenuList(takemenu.getUserheadImage().getUrl(), takemenu.getMenuBegin(), takemenu.getMenuEnd(), "3");
-                                lists.add(takeMenuList);
-                            }
-                            setRecycleView(screenData(lists));
-                            break;
                     }
+                };
 
+                @Override
+                public void done(List<ExpressHelp> list, BmobException e) {
+                    if (e == null) {
+                        Log.d("一共查到", list.size() + "条数据");
+                        Message message = handle.obtainMessage();
+                        message.what = FLAG_QUERY;
+                        message.obj = list;
+                        handle.sendMessage(message);
+                    } else {
+                        Log.d("查询失败：", e.getMessage());
+                    }
                 }
-            };
+            });
+            setRecycleView(screenData(lists));
 
-            @Override
-            public void done(List<TakeMenu> list, BmobException e) {
-                if (e == null) {
-                    Log.d("一共查到", list.size() + "条数据");
-                    Message message = handle.obtainMessage();
-                    message.what = FLAG_QUERY;
-                    message.obj = list;
-                    handle.sendMessage(message);
-                } else {
-                    Log.d("查询失败：", e.getMessage());
-                }
-            }
-        });
-        setRecycleView(screenData(lists));
 
     }
-    public void onClick(View v){
-        switch (v.getId()){
+
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.take_back:
 
                 break;
         }
     }
-
 }
+
