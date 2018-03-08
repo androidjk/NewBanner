@@ -70,6 +70,7 @@ public class Menu_main_fragment extends Fragment implements View.OnTouchListener
     private List<View> mDotList = new ArrayList<View>();
     static String path = Environment.getExternalStorageDirectory().getAbsolutePath();
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

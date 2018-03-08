@@ -1,9 +1,11 @@
 package com.example.newbanner.activity;
 
 import android.app.Notification;
+import android.content.DialogInterface;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -218,7 +220,7 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener {
 
     private void saveDataBmob() {
 
-        ExpressHelp expressHelp = new ExpressHelp(null, "五食堂", "1-5栋", "3","0101");
+        ExpressHelp expressHelp = new ExpressHelp(null, "五食堂", "1-5栋", "3", "0101");
         expressHelp.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
@@ -277,7 +279,18 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener {
         recycleviewAdapter.setOnItemClickListener(new RecycleviewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(view.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("我要接单")
+                        .setMessage("你确定要领取这个订单吗？")
+                        .setNegativeButton("再想想", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mActivity, "订单领取成功", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+//                Toast.makeText(view.getContext(), position + "", Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.setAdapter(recycleviewAdapter);
@@ -374,41 +387,41 @@ public class TakeActivity extends BaseActivity implements View.OnClickListener {
 //                        }
 //                    });
 //        } else {
-            BmobQuery<ExpressHelp> bmobQuery = new BmobQuery();
-            bmobQuery.addWhereEqualTo("pickupCode", "0101");
-            bmobQuery.setLimit(50);
-            bmobQuery.findObjects(new FindListener<ExpressHelp>() {
-                Handler handle = new Handler() {
+        BmobQuery<ExpressHelp> bmobQuery = new BmobQuery();
+        bmobQuery.addWhereEqualTo("pickupCode", "0101");
+        bmobQuery.setLimit(50);
+        bmobQuery.findObjects(new FindListener<ExpressHelp>() {
+            Handler handle = new Handler() {
 
-                    public void handleMessage(Message msg) {
-                        switch (msg.what) {
-                            case FLAG_QUERY:
-                                List<ExpressHelp> list = (List) msg.obj;
-                                for (ExpressHelp expressHelp : list) {
-                                    ExpressHelp express = new ExpressHelp(expressHelp.getUser(), expressHelp.getPointName(), expressHelp.getAddressAccuracy(), "3","0101");
-                                    lists.add(express);
-                                }
-                                setRecycleView(screenData(lists));
-                                break;
-                        }
-
+                public void handleMessage(Message msg) {
+                    switch (msg.what) {
+                        case FLAG_QUERY:
+                            List<ExpressHelp> list = (List) msg.obj;
+                            for (ExpressHelp expressHelp : list) {
+                                ExpressHelp express = new ExpressHelp(expressHelp.getUser(), expressHelp.getPointName(), expressHelp.getAddressAccuracy(), "3", "0101");
+                                lists.add(express);
+                            }
+                            setRecycleView(screenData(lists));
+                            break;
                     }
-                };
 
-                @Override
-                public void done(List<ExpressHelp> list, BmobException e) {
-                    if (e == null) {
-                        Log.d("一共查到", list.size() + "条数据");
-                        Message message = handle.obtainMessage();
-                        message.what = FLAG_QUERY;
-                        message.obj = list;
-                        handle.sendMessage(message);
-                    } else {
-                        Log.d("查询失败：", e.getMessage());
-                    }
                 }
-            });
-            setRecycleView(screenData(lists));
+            };
+
+            @Override
+            public void done(List<ExpressHelp> list, BmobException e) {
+                if (e == null) {
+                    Log.d("一共查到", list.size() + "条数据");
+                    Message message = handle.obtainMessage();
+                    message.what = FLAG_QUERY;
+                    message.obj = list;
+                    handle.sendMessage(message);
+                } else {
+                    Log.d("查询失败：", e.getMessage());
+                }
+            }
+        });
+        setRecycleView(screenData(lists));
 
 
     }
